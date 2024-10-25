@@ -4,8 +4,6 @@ import React from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { useRouter } from 'expo-router';
-
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -31,6 +29,16 @@ export default function TabLayout() {
           title: 'Login',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+          ),
+        }}
+      />
+      {/* Add Closet Screen */}
+      <Tabs.Screen
+        name="closet"
+        options={{
+          title: "Closet",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'shirt' : 'shirt-outline'} color={color} />
           ),
         }}
       />
