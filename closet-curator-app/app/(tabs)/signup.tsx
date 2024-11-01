@@ -8,12 +8,17 @@ import { StyleSheet, Image, Platform, Text, View, TextInput, TouchableOpacity } 
 // import { ThemedView } from '@/components/ThemedView';
 // import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function LoginScreen() {
+// const validateEmail = (email) => {
+//   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//   return regex.test(email);
+// };
+
+export default function SignUpScreen() {
   return (
     <View style={styles.loginScreenContainer}>
       <View style={styles.loginScreenContent}>
         <Text style={styles.loginText}>
-          Login
+          Sign Up
         </Text>
         <View style={styles.loginBox}>
           <Text style={styles.titleText}>Email</Text>
@@ -21,15 +26,22 @@ export default function LoginScreen() {
           onChangeText={() => {}}
           style={styles.emailTextBox}
         />
-          <Text style={styles.titleText}>Password</Text>
+        <Text style={styles.titleText}>Password</Text>
+        <TextInput
+        onChangeText={() => {}}
+        style={styles.passwordTextBox}
+        secureTextEntry={true}
+        />
+        <Text style={styles.titleText}>Confirm Password</Text>
           <TextInput
           onChangeText={() => {}}
           style={styles.passwordTextBox}
+          secureTextEntry={true}
         />
         <TouchableOpacity>
           <View style={styles.signInButton}>
             <Text style={styles.titleText2}>
-              Sign In
+              Sign Up
             </Text>
           </View>
         </TouchableOpacity>
@@ -66,11 +78,13 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     height: 30,
     borderRadius: 6,
+    paddingHorizontal: 5,
   },
   passwordTextBox: {
     backgroundColor: "white",
     height: 30,
     borderRadius: 6,
+    paddingHorizontal: 5,
   },
   loginScreenContent: {
     width: "80%",
