@@ -14,61 +14,66 @@ export default function WelcomeScreen() {
   const router = useRouter(); 
 
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText style={styles.welcomeText}>Welcome to Closet Curator</ThemedText>
+    <View style={styles.container}>
+      <Text style={styles.welcomeText}>Welcome to Closet Curator</Text>
       <Image
           source={require('@/assets/images/Closet-Curator-Logo.png')}
-          style={styles.logo}
-        resizeMode="contain"
+          style={styles.logo}        
       />
       <TouchableOpacity style={styles.loginButton} onPress={() => router.push('/login')}>
-        <ThemedText style={styles.buttonText}>Log In</ThemedText>
+        <Text style={styles.buttonText}>Log In</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.signupButton}>
-        <ThemedText style={styles.buttonText}>Sign Up</ThemedText>
+        <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
-    </ThemedView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#0c0b32',
+    justifyContent: 'center',
+    display: "flex",
+    paddingTop: 50,
+    gap: 10,
+    height: '100%',
   },
   welcomeText: {
     color: 'white',
     fontSize: 50,
+    textAlign: 'center',
+    marginBottom: 20,
   },
   appName: {
     color: 'white',
     fontSize: 28,
-    marginVertical: 10,
   },
   logo: {
-    width: '20%', 
-    marginVertical: 20,
+    width: 300,
+    height: undefined,
+    aspectRatio: 1,
+    marginBottom: 30,
   },
   loginButton: {
-    width: 400,
-    padding: 20,
-    margin: 10,
+    width: '90%',
+    padding: 12,
     backgroundColor: '#a292be', 
     borderRadius: 20,
     alignItems: 'center',
+
   },
   signupButton: {
-    width: 400,
-    padding: 20,
-    margin: 10,
+    width: '90%',
+    padding: 12,
+    // margin: 10,
     backgroundColor: '#a292be', 
     borderRadius: 20,
     alignItems: 'center',
   },
   buttonText: {
     color: 'white',
-    fontSize: 30,
+    fontSize: 25,
   },
 });
