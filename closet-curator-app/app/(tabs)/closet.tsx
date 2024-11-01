@@ -1,19 +1,52 @@
-import { StyleSheet, Image, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, View, TouchableOpacity, Modal, Text, Button } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useRouter } from 'expo-router'; // Import useRouter
+import { useState } from 'react';
+
+
+const MyModal = ({ visible, onClose }) => {
+  return (
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={visible}
+      onRequestClose={onClose}
+    >
+      <View style={styles.overlay}>
+        <View style={styles.modalContainer}>
+          <Text>Upload Image Here!</Text>
+          <Button title="Close" onPress={onClose} />
+        </View>
+      </View>
+    </Modal>
+  );
+};
+
 
 export default function ClosetScreen() {
   const router = useRouter();
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
 
   return (
     <ThemedView style={styles.container}>
       <ThemedText style={styles.title}>Adam's Closet</ThemedText>
 
-      <TouchableOpacity style={styles.uploadButton}>
+      <TouchableOpacity style={styles.uploadButton} onPress={openModal}>
         <Image source={require('@/assets/images/upload.png')} style={styles.uploadIcon} />
         <ThemedText style={styles.uploadButtonText}>Upload Item</ThemedText>
       </TouchableOpacity>
+
+      <MyModal visible={modalVisible} onClose={closeModal}/>
 
       <View style={styles.clothingGrid}>
         <Image source={require('@/assets/images/shirt1.webp')} style={styles.clothingItem} resizeMode="contain" />
@@ -28,6 +61,19 @@ export default function ClosetScreen() {
 }
 
 const styles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContainer: {
+    width: 300,
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
