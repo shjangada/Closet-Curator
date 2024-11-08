@@ -1,21 +1,36 @@
 import { StyleSheet, Image, View, TouchableOpacity, Modal, Text, Button } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { useRouter } from 'expo-router'; // Import useRouter
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
+import * as ImagePicker from 'expo-image-picker';
 
+const MyModal = ({ visible, onClose, onImageSelected }) => {
+  const selectImage = async () => {
+    // Request permission to access photos
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permissionResult.granted) {
+      alert("Permission to access media library is required!");
+      return;
+    }
 
-const MyModal = ({ visible, onClose }) => {
+    // Open the image picker
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      onImageSelected(result.assets[0].uri);
+    }
+  };
+
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={visible}
-      onRequestClose={onClose}
-    >
+    <Modal animationType="slide" transparent={true} visible={visible} onRequestClose={onClose}>
       <View style={styles.overlay}>
         <View style={styles.modalContainer}>
           <Text>Upload Image Here!</Text>
+          <Button title="Select Image" onPress={selectImage} />
           <Button title="Close" onPress={onClose} />
         </View>
       </View>
@@ -23,19 +38,17 @@ const MyModal = ({ visible, onClose }) => {
   );
 };
 
-
 export default function ClosetScreen() {
   const router = useRouter();
   const [modalVisible, setModalVisible] = useState(false);
+  const [selectedImageUri, setSelectedImageUri] = useState(null);
 
-  const openModal = () => {
-    setModalVisible(true);
+  const openModal = () => setModalVisible(true);
+  const closeModal = () => setModalVisible(false);
+  const handleImageSelected = (uri) => {
+    setSelectedImageUri(uri);
+    closeModal();
   };
-
-  const closeModal = () => {
-    setModalVisible(false);
-  };
-
 
   return (
     <ThemedView style={styles.container}>
@@ -46,7 +59,11 @@ export default function ClosetScreen() {
         <ThemedText style={styles.uploadButtonText}>Upload Item</ThemedText>
       </TouchableOpacity>
 
-      <MyModal visible={modalVisible} onClose={closeModal}/>
+      <MyModal visible={modalVisible} onClose={closeModal} onImageSelected={handleImageSelected} />
+
+      {selectedImageUri && (
+        <Image source={{ uri: selectedImageUri }} style={styles.previewImage} resizeMode="contain" />
+      )}
 
       <View style={styles.clothingGrid}>
         <Image source={require('@/assets/images/shirt1.webp')} style={styles.clothingItem} resizeMode="contain" />
@@ -124,5 +141,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 50,
     backgroundColor: '#c5a1d5',
+  },
+  previewImage: {
+    width: 200,
+    height: 200,
+    marginTop: 10,
+    borderRadius: 10,
   },
 });
