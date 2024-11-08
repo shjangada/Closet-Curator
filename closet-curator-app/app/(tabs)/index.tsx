@@ -1,70 +1,139 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Image, Text, View, TouchableOpacity } from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+interface CategoryButtonProps {
+  label: string;
+  isSelected: boolean;
+  onPress: () => void;
+}
 
-export default function HomeScreen() {
+const CategoryButton: React.FC<CategoryButtonProps> = ({ label, isSelected, onPress }) => (
+  <TouchableOpacity 
+    style={[styles.categoryButton, isSelected && styles.categoryButtonSelected]} 
+    onPress={onPress}
+  >
+    <Text style={styles.categoryButtonText}>{label}</Text>
+  </TouchableOpacity>
+);
+
+export default function ClosetScreen() {
+  const [selectedCategories, setSelectedCategories] = useState({
+    casual: true,
+    formal: false,
+    rainy: false,
+    sunny: true,
+  });
+
+  const toggleCategory = (category: keyof typeof selectedCategories) => {
+    setSelectedCategories(prev => ({
+      ...prev,
+      [category]: !prev[category]
+    }));
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+    <View style={styles.screenContainer}>
+      <Text style={styles.titleText}>Adam's Closet</Text>
+      
+      <View style={styles.clothingContainer}>
+        <Image 
+          source={require('@/assets/images/hoodie.png')} // Update with your actual image path
+          style={styles.clothingImage}
+          resizeMode="cover"
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      </View>
+
+      <View style={styles.categoryContainer}>
+        <View style={styles.categoryRow}>
+          <CategoryButton 
+            label="Casual" 
+            isSelected={selectedCategories.casual}
+            onPress={() => toggleCategory('casual')}
+          />
+          <CategoryButton 
+            label="Formal" 
+            isSelected={selectedCategories.formal}
+            onPress={() => toggleCategory('formal')}
+          />
+        </View>
+        
+        <View style={styles.categoryRow}>
+          <CategoryButton 
+            label="For Rainy Weather" 
+            isSelected={selectedCategories.rainy}
+            onPress={() => toggleCategory('rainy')}
+          />
+          <CategoryButton 
+            label="For Sunny Weather" 
+            isSelected={selectedCategories.sunny}
+            onPress={() => toggleCategory('sunny')}
+          />
+        </View>
+      </View>
+
+      <TouchableOpacity style={styles.addButton}>
+        <Text style={styles.addButtonText}>Add Item</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
+  screenContainer: {
+    flex: 1,
+    backgroundColor: '#1a1a2e',
+    padding: 20,
+  },
+  titleText: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  clothingContainer: {
+    backgroundColor: '#e6e6fa',
+    borderRadius: 10,
+    padding: 20,
     alignItems: 'center',
-    gap: 8,
+    marginBottom: 20,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  clothingImage: {
+    width: 200,
+    height: 200,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  categoryContainer: {
+    gap: 10,
+    marginBottom: 20,
+  },
+  categoryRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 10,
+  },
+  categoryButton: {
+    flex: 1,
+    backgroundColor: '#ffffff20',
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  categoryButtonSelected: {
+    backgroundColor: '#ffffff40',
+  },
+  categoryButtonText: {
+    color: 'white',
+    fontSize: 14,
+  },
+  addButton: {
+    backgroundColor: '#1a1a3e',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  addButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
