@@ -41,7 +41,10 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   loginScreenContainer: {
-    paddingTop: 200,
+    
+    height: "100%",
+    // backgroundColor: "black",
+    backgroundColor: '#0c0b32',
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",

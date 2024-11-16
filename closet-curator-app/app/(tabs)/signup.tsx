@@ -53,8 +53,10 @@ export default function SignUpScreen() {
 
 const styles = StyleSheet.create({
   loginScreenContainer: {
-    paddingTop: 200,
+    height: "100%",
+    // paddingTop: 200,
     flexDirection: "column",
+    backgroundColor: '#0c0b32',
     alignItems: "center",
     justifyContent: "center",
   },
