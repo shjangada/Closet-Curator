@@ -32,6 +32,16 @@ export default function TabLayout() {
           ),
         }}
       />
+      {/* Add Closet Screen */}
+      <Tabs.Screen
+        name="closet"
+        options={{
+          title: "Closet",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'shirt' : 'shirt-outline'} color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
