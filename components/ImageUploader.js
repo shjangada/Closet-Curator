@@ -33,7 +33,7 @@ const ImageUploader = ({ userId }) => {
     const blob = await response.blob();
 
     const { data, error } = await supabase.storage
-      .from('your-bucket-name')
+      .from('image-bucket')
       .upload(`${userFolder}${fileName}`, blob, {
         cacheControl: '3600',
         upsert: false,
