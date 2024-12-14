@@ -39,14 +39,14 @@ const NavBar = () => {
             name="home-outline"
             color={activeTab === 'home' ? 'white' : '#999'}
           />
-          <Text
+          {/* <Text
             style={[
               styles.navText,
               { color: activeTab === 'home' ? 'white' : '#999' },
             ]}
           >
             Home
-          </Text>
+          </Text> */}
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -57,14 +57,14 @@ const NavBar = () => {
             name="shirt-outline"
             color={activeTab === 'closet' ? 'white' : '#999'}
           />
-          <Text
+          {/* <Text
             style={[
               styles.navText,
               { color: activeTab === 'closet' ? 'white' : '#999' },
             ]}
           >
             Closet
-          </Text>
+          </Text> */}
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -75,14 +75,14 @@ const NavBar = () => {
             name="sparkles-outline"
             color={activeTab === 'recommendations' ? 'white' : '#999'}
           />
-          <Text
+          {/* <Text
             style={[
               styles.navText,
               { color: activeTab === 'recommendations' ? 'white' : '#999' },
             ]}
           >
             Recommendations
-          </Text>
+          </Text> */}
         </TouchableOpacity>
       </View>
     </View>
@@ -99,15 +99,17 @@ const styles = StyleSheet.create({
   },
   navbar: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 25,
     left: 0,
     right: 0,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    // justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: 'transparent', // Transparent background for the navbar
     paddingVertical: 10,
     zIndex: 1000, // Ensure navbar stays on top
+    justifyContent: "center",
+    columnGap: 50,
   },
   navButton: {
     alignItems: 'center',
