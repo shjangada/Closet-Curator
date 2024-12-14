@@ -1,19 +1,29 @@
 // import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, Image, Platform, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, Platform, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { supabase } from '../../supabase';
+import React, { useState } from 'react';
 
-// import { Collapsible } from '@/components/Collapsible';
-// import { ExternalLink } from '@/components/ExternalLink';
-// import ParallaxScrollView from '@/components/ParallaxScrollView';
-// import { ThemedText } from '@/components/ThemedText';
-// import { ThemedView } from '@/components/ThemedView';
-// import { TouchableOpacity } from 'react-native-gesture-handler';
-
-// const validateEmail = (email) => {
-//   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//   return regex.test(email);
-// };
 
 export default function SignUpScreen() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const handleSignUp = async () => {
+
+    if (confirmPassword != password) {
+      Alert.alert("Passwords don't match!");
+      return;
+    }
+
+    const { error } = await supabase.auth.signUp({ email, password });
+    if (error) {
+      Alert.alert('Error', error.message);
+    } else {
+      Alert.alert('Success', 'Account created!');
+    }
+  };
+
   return (
     <View style={styles.loginScreenContainer}>
       <View style={styles.loginScreenContent}>
@@ -23,22 +33,30 @@ export default function SignUpScreen() {
         <View style={styles.loginBox}>
           <Text style={styles.titleText}>Email</Text>
           <TextInput
-          onChangeText={() => {}}
+          placeholder="Email"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
           style={styles.emailTextBox}
+          keyboardType="email-address"
         />
+
         <Text style={styles.titleText}>Password</Text>
         <TextInput
-        onChangeText={() => {}}
-        style={styles.passwordTextBox}
-        secureTextEntry={true}
+          placeholder="Password"
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+          style={styles.passwordTextBox}
+          secureTextEntry
         />
         <Text style={styles.titleText}>Confirm Password</Text>
-          <TextInput
-          onChangeText={() => {}}
+        <TextInput
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChangeText={(text) => setConfirmPassword(text)}
           style={styles.passwordTextBox}
-          secureTextEntry={true}
+          secureTextEntry
         />
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleSignUp}>
           <View style={styles.signInButton}>
             <Text style={styles.titleText2}>
               Sign Up
