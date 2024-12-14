@@ -1,0 +1,4 @@
+flask
+torch
+pillow       # For image processing, if needed
+supabase
