@@ -80,6 +80,7 @@ const CategoryModal: React.FC<CategoryModalProps> = ({ visible, onClose, image, 
           if (data && data.user) {
 
             console.log(`Testing fetchUse ${data.user.id}`)            
+            setUserId(data.user.id);
 
           }
         }
@@ -162,10 +163,10 @@ const CategoryModal: React.FC<CategoryModalProps> = ({ visible, onClose, image, 
           <Text style={styles.titleText}>Adam's Closet</Text>
           
           <View style={styles.clothingContainer}>
-            {uploadedImage ? (
+            {image ? (
               <TouchableOpacity onPress={pickImage}>
                 <Image 
-                  source={{ uri: uploadedImage }}
+                  source={{ uri: image }}
                   style={styles.clothingImage}
                   resizeMode="cover"
                 />
@@ -177,7 +178,7 @@ const CategoryModal: React.FC<CategoryModalProps> = ({ visible, onClose, image, 
             )}
           </View>
 
-          {uploadedImage && (
+          {image && (
             <View style={styles.categoryContainer}>
               <View style={styles.categoryRow}>
                 <CategoryButton 
@@ -208,7 +209,7 @@ const CategoryModal: React.FC<CategoryModalProps> = ({ visible, onClose, image, 
           )}
 
           <TouchableOpacity 
-            style={[styles.addButton, !uploadedImage && styles.disabledButton]} 
+            style={[styles.addButton, !image && styles.disabledButton]} 
             onPress={onClose}
             disabled={!uploadedImage}
           >
