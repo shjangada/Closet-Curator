@@ -1,41 +1,60 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { supabase } from '@/supabase'; // Adjust the import to your Supabase client location
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-
-import Welcome from './welcome'; // Assuming you have a Welcome.tsx file
-import Closet from './closet';   // Assuming you have a Closet.tsx file
-import Recommendations from './recommendations'; // Assuming you have a Recommendations.tsx file
-import LoginScreen from './login';
-import SignUpScreen from './signup';
+import Welcome from './welcome'; 
+import Closet from './closet';  
+import Recommendations from './recommendations'; 
+import Login from './login';
+import Signup from './signup';
 
 const NavBar = () => {
   const [activeTab, setActiveTab] = useState('home');
+  const [signedIn, setSignedIn] = useState(false);
   const colorScheme = useColorScheme();
+
+  // Check the user's signed-in status on component mount
+  useEffect(() => {
+    // Check if a session exists using Supabase
+    const session = supabase.auth.getSession();
+    setSignedIn(!!session); // If there's a session, the user is signed in
+
+    // Listen for authentication state changes (login/logout)
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      setSignedIn(!!session); // Update signedIn state based on session
+    });
+
+    // Clean up listener on unmount
+    return () => {
+      authListener?.unsubscribe();
+    };
+  }, []);
 
   const renderContent = () => {
     switch (activeTab) {
       case 'home':
-        return <Welcome />;
+        return <Welcome setActiveTab={setActiveTab} />;
+      case 'login':
+        return <Login />;
+      case 'signup':
+        return <Signup />;
       case 'closet':
         return <Closet />;
       case 'recommendations':
         return <Recommendations />;
-      case 'login':
-        return <LoginScreen />;
-      case 'signup':
-        return <SignUpScreen />;
       default:
-        return <Welcome />;
+        return <Welcome setActiveTab={setActiveTab} />;
     }
   };
 
+  // Render the navbar only if the user is signed in
   return (
     <View style={styles.wrapper}>
       {/* Page content */}
       <View style={styles.content}>{renderContent()}</View>
 
-      {/* Fixed navbar at the bottom */}
+      {/* Show navbar only if signedIn is true */}
       <View style={styles.navbar}>
         <TouchableOpacity
           style={styles.navButton}
@@ -47,63 +66,30 @@ const NavBar = () => {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.navButton}
-          onPress={() => setActiveTab('closet')}
-        >
-          <TabBarIcon
-            name="shirt-outline"
-            color={activeTab === 'closet' ? 'white' : '#999'}
-          />
-          {/* <Text
-            style={[
-              styles.navText,
-              { color: activeTab === 'closet' ? 'white' : '#999' },
-            ]}
-          >
-            Closet
-          </Text> */}
-        </TouchableOpacity>
+        {/* Only show 'closet' and 'recommendations' buttons if signedIn is true */}
+        {signedIn && (
+          <>
+            <TouchableOpacity
+              style={styles.navButton}
+              onPress={() => setActiveTab('closet')}
+            >
+              <TabBarIcon
+                name="shirt-outline"
+                color={activeTab === 'closet' ? 'white' : '#999'}
+              />
+            </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.navButton}
-          onPress={() => setActiveTab('recommendations')}
-        >
-          <TabBarIcon
-            name="sparkles-outline"
-            color={activeTab === 'recommendations' ? 'white' : '#999'}
-          />
-          {/* <Text
-            style={[
-              styles.navText,
-              { color: activeTab === 'recommendations' ? 'white' : '#999' },
-            ]}
-          >
-            Recommendations
-          </Text> */}
-        </TouchableOpacity>
-
-        {/* delete the below stuff! */}
-
-        <TouchableOpacity
-          style={styles.navButton}
-          onPress={() => setActiveTab('login')}
-        >
-          <TabBarIcon
-            name="sparkles-outline"
-            color={activeTab === 'login' ? 'white' : '#999'}
-          />
-        </TouchableOpacity>
-        
-        <TouchableOpacity
-          style={styles.navButton}
-          onPress={() => setActiveTab('signup')}
-        >
-          <TabBarIcon
-            name="sparkles-outline"
-            color={activeTab === 'signup' ? 'white' : '#999'}
-          />
-        </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.navButton}
+              onPress={() => setActiveTab('recommendations')}
+            >
+              <TabBarIcon
+                name="sparkles-outline"
+                color={activeTab === 'recommendations' ? 'white' : '#999'}
+              />
+            </TouchableOpacity>
+          </>
+        )}
       </View>
     </View>
   );
@@ -119,17 +105,16 @@ const styles = StyleSheet.create({
   },
   navbar: {
     position: 'absolute',
-    bottom: 25,
+    bottom: 30,
     left: 0,
     right: 0,
     flexDirection: 'row',
-    // justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: 'transparent', // Transparent background for the navbar
+    backgroundColor: 'transparent',
     paddingVertical: 10,
     zIndex: 1000, // Ensure navbar stays on top
-    justifyContent: "center",
-    columnGap: 50,
+    justifyContent: 'center',
+    columnGap: 80,
   },
   navButton: {
     alignItems: 'center',
