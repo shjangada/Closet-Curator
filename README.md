@@ -7,7 +7,8 @@ Closet Curator is an innovative fashion app designed to help users effortlessly 
 
 ## Problem Statement
 Many individuals struggle with choosing outfits that align with their personal style, fit the occasion, and match the weather. This often results in people wearing the same combinations over and over, despite owning a variety of clothes. Closet Curator addresses this by offering creative outfit suggestions tailored to the user’s wardrobe and preferences.
-
+## Group Members
+Seher Bhaskar - Backend Developer, Shreya Jangada & Dhanish Natarajan - Frontend Developers, Shankar Sathyanarayanan- ML/Reccomendation Engine Developer.
 ## Key Features
 1. **Wardrobe Upload**: Users can upload images of their clothing by taking pictures with their phone. These images are stored in a personal wardrobe database.
 2. **Personalized Outfit Suggestions**: The app suggests outfits based on user preferences like “casual,” “formal,” or “trendy” and displays these suggestions through an easy-to-use interface.
@@ -54,3 +55,5 @@ While the current app focuses on basic outfit recommendations, future updates wi
 - **Event-Based Suggestions**: Tailoring outfits for specific events like parties or work meetings.
 - **Weather-Based Recommendations**: Suggesting clothing based on real-time weather conditions.
 - **Outfit Sharing**: Allowing users to share their favorite outfits with friends via social media or in-app sharing options.
+
+## Installation Guide
