@@ -61,3 +61,4 @@ While the current app focuses on basic outfit recommendations, future updates wi
 cd closet_curator-app
 npm i
 ```
+First, cd into the folder, then run "npm i" to install all required dependencies.
