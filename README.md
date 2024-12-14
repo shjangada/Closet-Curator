@@ -57,3 +57,7 @@ While the current app focuses on basic outfit recommendations, future updates wi
 - **Outfit Sharing**: Allowing users to share their favorite outfits with friends via social media or in-app sharing options.
 
 ## Installation Guide
+```console
+cd closet_curator-app
+npm i
+```
