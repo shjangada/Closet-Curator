@@ -8,12 +8,12 @@ Closet Curator is an innovative fashion app designed to help users effortlessly 
 ## Problem Statement
 Many individuals struggle with choosing outfits that align with their personal style, fit the occasion, and match the weather. This often results in people wearing the same combinations over and over, despite owning a variety of clothes. Closet Curator addresses this by offering creative outfit suggestions tailored to the user’s wardrobe and preferences.
 ## Group Members
-Seher Bhaskar - Backend Developer, Shreya Jangada & Dhanish Natarajan - Frontend Developers, Shankar Sathyanarayanan- ML/Reccomendation Engine Developer.
+Seher Bhaskar - Backend Developer, Shreya Jangada & Dhanish Natarajan - Frontend Developers, Shankar Sathyanarayanan- ML/Recommendation Engine Developer.
 ## Key Features
 1. **Wardrobe Upload**: Users can upload images of their clothing by taking pictures with their phone. These images are stored in a personal wardrobe database.
-2. **Personalized Outfit Suggestions**: The app suggests outfits based on user preferences like “casual,” “formal,” or “trendy” and displays these suggestions through an easy-to-use interface.
-3. **Weather and Event-Based Recommendations**: In future updates, Closet Curator will provide suggestions based on local weather conditions or specific events (meetings, parties, etc.).
-4. **Laundry Filter**: Users can mark clothing items as “in the laundry,” making them temporarily unavailable for outfit recommendations.
+2. **Personalized Outfit Suggestions**: The app suggests outfits based on the user's "virtual closet" and displays these suggestions through an easy-to-use interface.
+3. **Weather and Event-Based Recommendations**: In future updates, Closet Curator will provide suggestions based on local weather conditions or specific events (meetings, parties, etc.), or preferences like “casual,” “formal,” or “trendy”.
+4. **Laundry Filter**: Users will soon be able to mark clothing items as “in the laundry,” making them temporarily unavailable for outfit recommendations.
 
 ## Core Functionalities
 
@@ -24,7 +24,7 @@ Seher Bhaskar - Backend Developer, Shreya Jangada & Dhanish Natarajan - Frontend
 - Users upload images of their clothing using their phone camera. These images are stored in the app’s database, and the wardrobe can be managed (viewed, deleted, or updated) within the app.
 
 ### 3. Outfit Suggestions
-- Based on uploaded wardrobe items, the app recommends complete outfits. Users can choose from different styles (e.g., casual, formal) to guide the recommendations.
+- Based on uploaded wardrobe items, the app recommends complete outfits. Users will be able to choose from different styles (e.g., casual, formal) to guide the recommendations.
 - The app utilizes a recommendation engine that analyzes clothing combinations using machine learning and pattern recognition.
 
 ### 4. Machine Learning Recommendation Engine
