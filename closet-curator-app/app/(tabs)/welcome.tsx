@@ -1,44 +1,87 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, Image, Platform, View, Text, TouchableOpacity } from 'react-native';
-
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useRouter } from 'expo-router'; // Import useRouter
+import Logo from '@/assets/images/Closet-Curator-Logo.png'
+import Login from './login'; // Assuming you have login.tsx
+import Signup from './signup'; // Assuming you have signup.tsx
 
+const WelcomeScreen = ({setActiveTab}) => {
+  // const [activeTab, setActiveTab] = useState('home'); // Default to 'home'
+  // const router = useRouter();
 
-
-export default function WelcomeScreen() {
-  const router = useRouter(); 
+  // Render content based on active tab
+  // const renderContent = () => {
+  //   switch (activeTab) {
+  //     case 'home':
+  //       return (
+  //         <View style={styles.buttonWrapper}>
+  //           <Text style={styles.welcomeText}>Welcome to Closet Curator</Text>
+  //           <TouchableOpacity
+  //             style={styles.loginButton}
+  //             onPress={() => setActiveTab('login')}
+  //           >
+  //             <Text style={styles.buttonText}>Log In</Text>
+  //           </TouchableOpacity>
+  //           <TouchableOpacity
+  //             style={styles.signupButton}
+  //             onPress={() => setActiveTab('signup')}
+  //           >
+  //             <Text style={styles.buttonText}>Sign Up</Text>
+  //           </TouchableOpacity>
+  //         </View>
+  //       );
+  //     case 'login':
+  //       return <Login />; // Render Login component
+  //     case 'signup':
+  //       return <Signup />; // Render Signup component
+  //     default:
+  //       return (
+          
+  //       );
+  //   }
+  // };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>Welcome to Closet Curator</Text>
-      <Image
-          source={require('@/assets/images/Closet-Curator-Logo.png')}
-          style={styles.logo}        
+      {/* Logo */}
+      <Image 
+        source={Logo}
+        style={styles.logo}
       />
-      <TouchableOpacity style={styles.loginButton} onPress={() => router.push('/login')}>
-        <Text style={styles.buttonText}>Log In</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.signupButton}  onPress={() => router.push('/signup')}>
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </TouchableOpacity>
+
+        <View style={styles.buttonWrapper}>
+            <Text style={styles.welcomeText}>Welcome to Closet Curator</Text>
+            <TouchableOpacity
+              style={styles.loginButton}
+              onPress={() => setActiveTab('login')}
+            >
+              <Text style={styles.buttonText}>Log In</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.signupButton}
+              onPress={() => setActiveTab('signup')}
+            >
+              <Text style={styles.buttonText}>Sign Up</Text>
+            </TouchableOpacity>
+          </View>
+      {/* {renderContent()} */}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     backgroundColor: '#0c0b32',
-    justifyContent: 'center',
-    display: "flex",
+    display: 'flex',
     paddingTop: 50,
     gap: 10,
-    height: '100%',
+    marginTop: 130,
+  },
+  logo: {
+    width: 150,  // Adjust the width of the logo
+    height: 150, // Adjust the height of the logo
+    marginBottom: 20, // Give space between the logo and text
   },
   welcomeText: {
     color: 'white',
@@ -46,29 +89,24 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
   },
-  appName: {
-    color: 'white',
-    fontSize: 28,
-  },
-  logo: {
-    width: 300,
-    height: undefined,
-    aspectRatio: 1,
-    marginBottom: 30,
+  buttonWrapper: {
+    width: '90%',
+    alignItems: 'center',
   },
   loginButton: {
-    width: '90%',
     padding: 12,
-    backgroundColor: '#a292be', 
+    paddingRight: 100,
+    paddingLeft: 100,
+    backgroundColor: '#a292be',
     borderRadius: 20,
     alignItems: 'center',
-
+    marginBottom: 20,
   },
   signupButton: {
-    width: '90%',
     padding: 12,
-    // margin: 10,
-    backgroundColor: '#a292be', 
+    paddingRight: 90,
+    paddingLeft: 90,
+    backgroundColor: '#a292be',
     borderRadius: 20,
     alignItems: 'center',
   },
@@ -77,3 +115,5 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
 });
+
+export default WelcomeScreen;
