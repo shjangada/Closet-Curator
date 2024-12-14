@@ -14,7 +14,7 @@ interface CategoryButtonProps {
 interface CategoryModalProps {
   visible: any; // Define 'visible' as any
   onClose: any; // Define 'onClose' as any
-  image: any, setImage: any, userId: any, setUserId: any, images: any, setImages: any
+  image: any, setImage: any, userId: any, setUserId: any, images: any, setImages: any, userName: any, setUserName: any,
 }
 
 
@@ -27,7 +27,7 @@ const CategoryButton: React.FC<CategoryButtonProps> = ({ label, isSelected, onPr
   </TouchableOpacity>
 );
 
-const CategoryModal: React.FC<CategoryModalProps> = ({ visible, onClose, image, setImage, userId, setUserId, images, setImages }) => {
+const CategoryModal: React.FC<CategoryModalProps> = ({ visible, onClose, image, setImage, userId, setUserId, images, setImages, userName, setUserName }) => {
   const [selectedCategories, setSelectedCategories] = useState({
     casual: true,
     formal: false,
@@ -81,7 +81,7 @@ const CategoryModal: React.FC<CategoryModalProps> = ({ visible, onClose, image, 
 
             console.log(`Testing fetchUse ${data.user.id}`)            
             setUserId(data.user.id);
-
+            setUserName(data.user.email?.replace("@gmail.com", ""));
           }
         }
       } catch (err) {
@@ -160,7 +160,7 @@ const CategoryModal: React.FC<CategoryModalProps> = ({ visible, onClose, image, 
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <Text style={styles.closeButtonText}>X</Text>
           </TouchableOpacity>
-          <Text style={styles.titleText}>Adam's Closet</Text>
+          <Text style={styles.titleText}>{userName} Closet</Text>
           
           <View style={styles.clothingContainer}>
             {image ? (
@@ -229,6 +229,7 @@ export default function ClosetScreen() {
   const [image, setImage] = useState<any>(null);
   const [userId, setUserId] = useState<any>(null);
   const [images, setImages] = useState<any[]>([]);
+  const [userName, setUserName] = useState<any>(null);
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -242,7 +243,7 @@ export default function ClosetScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Adam's Closet</Text>
+      <Text style={styles.title}>{userName}'s Closet</Text>
 
       <TouchableOpacity style={styles.uploadButton} onPress={() => setModalVisible(true)}>
         <Image source={require('@/assets/images/upload.png')} style={styles.uploadIcon} />
@@ -272,6 +273,8 @@ export default function ClosetScreen() {
         setUserId={setUserId}
         images={images}
         setImages={setImages}
+        userName={userName}
+        setUserName={setUserName}
       />
     </View>
   );
