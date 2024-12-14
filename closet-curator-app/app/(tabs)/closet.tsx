@@ -1,14 +1,22 @@
-import React, { useState } from 'react';
-import { StyleSheet, Image, View, TouchableOpacity, Modal, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Image, View, TouchableOpacity, Modal, Text, Button, FlatList } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { supabase } from '../../supabase';
+import { Session } from '@supabase/supabase-js';
 
 interface CategoryButtonProps {
   label: string;
   isSelected: boolean;
   onPress: () => void;
 }
+interface CategoryModalProps {
+  visible: any; // Define 'visible' as any
+  onClose: any; // Define 'onClose' as any
+  image: any, setImage: any, userId: any, setUserId: any, images: any, setImages: any
+}
+
 
 const CategoryButton: React.FC<CategoryButtonProps> = ({ label, isSelected, onPress }) => (
   <TouchableOpacity 
@@ -19,7 +27,7 @@ const CategoryButton: React.FC<CategoryButtonProps> = ({ label, isSelected, onPr
   </TouchableOpacity>
 );
 
-const CategoryModal = ({ visible, onClose }) => {
+const CategoryModal: React.FC<CategoryModalProps> = ({ visible, onClose, image, setImage, userId, setUserId, images, setImages }) => {
   const [selectedCategories, setSelectedCategories] = useState({
     casual: true,
     formal: false,
@@ -29,18 +37,108 @@ const CategoryModal = ({ visible, onClose }) => {
 
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 
+
   const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
+    let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [1, 1],
+      aspect: [4, 3],
       quality: 1,
     });
 
     if (!result.canceled) {
-      setUploadedImage(result.assets[0].uri); // Use the uploaded image URI
+      setImage(result.assets[0].uri);
+
+      setImages((prevList: any) => [...prevList, result.assets[0].uri]);
+
+
+      const img = result.assets[0];
+
+      const filePath = `${userId}/${new Date().getTime()}.${img.uri.split('.').pop()}`;
+      const contentType = `image/${img.uri.split('.').pop()}`;
+
+      // const { data, error } = await supabase.storage
+      //   .from('image-bucket')
+      //   .upload(filePath, { uri: img.uri }, { contentType });
+    
+      const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('image-bucket')
+      .upload(filePath, { uri: img.uri }, { contentType });
+
+      console.log(uploadData);
     }
   };
+
+  useEffect(() => {
+
+    const fetchUser = async () => {
+      try {
+        const { data, error } = await supabase.auth.getUser();
+        if (error) {
+          console.error('Error fetching user:', error);
+        } else {
+          if (data && data.user) {
+
+            console.log(`Testing fetchUse ${data.user.id}`)            
+
+          }
+        }
+      } catch (err) {
+        console.error('Error during user fetch:', err);
+      }
+    };
+
+    fetchUser().then(() => {
+      loadImages();
+    })
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((event: string, session: Session | null) => {
+      fetchUser();
+    });
+
+    return () => {
+      supabase.auth.signOut(); // Ensure to clean up if needed
+    };
+  }, []);
+
+
+  useEffect(() => {
+    console.log({images})
+  }, [images])
+
+  const loadImages = async () => {
+    console.log("IN LOAD IMAGES")
+
+    const { data } = await supabase.storage.from('files').list(userId);
+
+    console.log({userId})
+
+    if (data) {
+      // console.log(" ====== IMAGES ARE LOADDEDDDDDDD!! =====")
+      console.log(data);
+    }
+  };
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (!error) {
+      // navigation.navigate('Login');
+    }
+  };
+
+
+  // const pickImage = async () => {
+  //   const result = await ImagePicker.launchImageLibraryAsync({
+  //     mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  //     allowsEditing: true,
+  //     aspect: [1, 1],
+  //     quality: 1,
+  //   });
+
+  //   if (!result.canceled) {
+  //     setUploadedImage(result.assets[0].uri); // Use the uploaded image URI
+  //   }
+  // };
 
   const toggleCategory = (category: keyof typeof selectedCategories) => {
     setSelectedCategories(prev => ({
@@ -122,8 +220,24 @@ const CategoryModal = ({ visible, onClose }) => {
   );
 };
 
+
+
+
 export default function ClosetScreen() {
+
+  const [image, setImage] = useState<any>(null);
+  const [userId, setUserId] = useState<any>(null);
+  const [images, setImages] = useState<any[]>([]);
+
   const [modalVisible, setModalVisible] = useState(false);
+
+  const renderItem = (props: any) => (
+    <Image
+      source={{ uri: props.item }}
+      style={styles.clothingItem}
+      resizeMode="contain"
+    />
+  );
 
   return (
     <View style={styles.container}>
@@ -135,16 +249,28 @@ export default function ClosetScreen() {
       </TouchableOpacity>
 
       <View style={styles.clothingGrid}>
-        <Image source={require('@/assets/images/shirt1.webp')} style={styles.clothingItem} resizeMode="contain" />
+        {/* <Image source={require('@/assets/images/shirt1.webp')} style={styles.clothingItem} resizeMode="contain" />
         <Image source={require('@/assets/images/shirt2.webp')} style={styles.clothingItem} resizeMode="contain" />
         <Image source={require('@/assets/images/pant1.png')} style={styles.clothingItem} resizeMode="contain" />
-        <Image source={require('@/assets/images/pant2.webp')} style={styles.clothingItem} resizeMode="contain" />
+        <Image source={require('@/assets/images/pant2.webp')} style={styles.clothingItem} resizeMode="contain" /> */}
+        <FlatList
+          data={images}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()} // Use index as key
+          numColumns={2} // Adjust the number of columns as needed
+        />
       </View>
 
       {/* Category Selection Modal */}
       <CategoryModal 
         visible={modalVisible} 
         onClose={() => setModalVisible(false)}
+        image={image}
+        setImage={setImage}
+        userId={userId}
+        setUserId={setUserId}
+        images={images}
+        setImages={setImages}
       />
     </View>
   );

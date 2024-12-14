@@ -6,6 +6,8 @@ import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import Welcome from './welcome'; // Assuming you have a Welcome.tsx file
 import Closet from './closet';   // Assuming you have a Closet.tsx file
 import Recommendations from './recommendations'; // Assuming you have a Recommendations.tsx file
+import LoginScreen from './login';
+import SignUpScreen from './signup';
 
 const NavBar = () => {
   const [activeTab, setActiveTab] = useState('home');
@@ -19,6 +21,10 @@ const NavBar = () => {
         return <Closet />;
       case 'recommendations':
         return <Recommendations />;
+      case 'login':
+        return <LoginScreen />;
+      case 'signup':
+        return <SignUpScreen />;
       default:
         return <Welcome />;
     }
@@ -39,14 +45,6 @@ const NavBar = () => {
             name="home-outline"
             color={activeTab === 'home' ? 'white' : '#999'}
           />
-          {/* <Text
-            style={[
-              styles.navText,
-              { color: activeTab === 'home' ? 'white' : '#999' },
-            ]}
-          >
-            Home
-          </Text> */}
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -83,6 +81,28 @@ const NavBar = () => {
           >
             Recommendations
           </Text> */}
+        </TouchableOpacity>
+
+        {/* delete the below stuff! */}
+
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => setActiveTab('login')}
+        >
+          <TabBarIcon
+            name="sparkles-outline"
+            color={activeTab === 'login' ? 'white' : '#999'}
+          />
+        </TouchableOpacity>
+        
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => setActiveTab('signup')}
+        >
+          <TabBarIcon
+            name="sparkles-outline"
+            color={activeTab === 'signup' ? 'white' : '#999'}
+          />
         </TouchableOpacity>
       </View>
     </View>
