@@ -49,7 +49,7 @@ Seher Bhaskar - Backend Developer, Shreya Jangada & Dhanish Natarajan - Frontend
 ### 4. Recommendation Engine
 - The recommendation engine, built using **CNN clustering**, identifies matching items from the user’s wardrobe by comparing them with pre-existing fashion trends in the DeepFashion dataset.
 - This engine works offline, storing the dataset locally and performing unsupervised learning on the user’s wardrobe to generate stylish, personalized outfits.
-
+![Alt text](IMG_1378.JPEG?raw=true "Title")
 ## Future Enhancements
 While the current app focuses on basic outfit recommendations, future updates will include features such as:
 - **Event-Based Suggestions**: Tailoring outfits for specific events like parties or work meetings.
